@@ -57,6 +57,11 @@ class Program
         }
     }
 
+    private static void RecuperarUsuari()
+    {
+        throw new NotImplementedException();
+    }
+
     static void MostrarMenu()
     {
         Console.BackgroundColor = ConsoleColor.DarkRed;
@@ -111,16 +116,191 @@ class Program
         Console.Write("Telèfon: ");
         nouUsuari.Telefon = ValidarTelefon(Console.ReadLine());
 
-        Console.Write("Data de naixement (dd/MM/yyyy): ");
-        nouUsuari.DataNaixement = ValidarDataNaixement(Console.ReadLine());
+        Console.Write("Entra una data de naixament: ");
+        DateTime dataNaix = Convert.ToDateTime(Console.ReadLine());
 
         Console.Write("Correu electrònic: ");
-        nouUsuari.CorreuElectronic = ValidarCorreuElectronic(Console.ReadLine());
+        nouUsuari.CorreuElectronic = ValidarCorreu(Console.ReadLine());
 
         agenda.Add(nouUsuari);
         Console.WriteLine("\nUsuari afegit amb èxit:");
         MostrarDadesUsuari(nouUsuari);
     }
 
+    private static void MostrarDadesUsuari(Usuario nouUsuari)
+    {
+        throw new NotImplementedException();
+    }
 
+    private static object ValidarDNI(string? v)
+    {
+        throw new NotImplementedException();
+    }
+
+    static string ValidarNom(string nom)
+    {
+        nom = Regex.Replace(nom, @"[^a-zA-Z]", "");
+        nom = char.ToUpper(nom[0]) + nom.Substring(1).ToLower();
+        return nom;
+    }
+    static string ValidarCognom(string cognom)
+    {
+        cognom = Regex.Replace(cognom, @"[^a-zA-Z]", "");
+        cognom = char.ToUpper(cognom[0]) + cognom.Substring(1).ToLower();
+        return cognom;
+    }
+    static string ValidarDni(string dni)
+    {
+        Console.Clear();
+        bool dniValid = false;
+        while (!dniValid)
+        {
+            var dniRegex = new Regex(@"^[1-9]{8}[A-Z]{1}$");
+            if (!dniRegex.IsMatch(dni))
+            {
+                Console.Write("Error. Entra un altre DNI: ");
+                dni = Console.ReadLine();
+            }
+            else
+            {
+                dniValid = true;
+            }
+        }
+        return dni;
+    }
+    static string ValidarTelefon(string telefon)
+    {
+        Console.Clear();
+        bool telefonValid = false;
+        while (!telefonValid)
+        {
+            var telefonRegex = new Regex(@"^\d{9}$");
+            if (!telefonRegex.IsMatch(telefon))
+            {
+                Console.Write("Error. Entra un altre telefon: ");
+                telefon = Console.ReadLine();
+            }
+            else
+                telefonValid = true;
+        }
+        return telefon;
+    }
+    static DateTime ValidarDataNeixament(DateTime dataNaix)
+    {
+        Console.Clear();
+        bool dataValida = false;
+        while (!dataValida)
+        {
+            if (dataNaix > DateTime.Now)
+            {
+                Console.Write("Error. Entra un altre data de naixament: ");
+                dataNaix = Convert.ToDateTime(Console.ReadLine());
+            }
+            else
+            {
+                dataValida = true;
+            }
+        }
+        return dataNaix;
+    }
+    static string ValidarCorreu(string correu)
+    {
+        Console.Clear();
+        bool correuValid = false;
+        while (!correuValid)
+        {
+            var correuRegex = new Regex(@"^[a-zA-Z0-9]+@[a-zA-Z]{3,}\.(com|es)$");
+            if (!correuRegex.IsMatch(correu))
+            {
+                Console.Write("Error. Entra un altre correu: ");
+                correu = Console.ReadLine();
+            }
+            else
+                correuValid = true;
+        }
+        return correu;
+    }
+    static void ObrirFitxer(string nom, string cognom, string dni, string telefon, DateTime dataNaix, string correu)
+    {
+        StreamWriter sW = new StreamWriter("agenda.txt", true);
+        sW.WriteLine($"{nom};{cognom};{dni};{telefon};{dataNaix.ToString("d")};{correu}\r");
+        sW.Close();
+
+    }
+    static void RecuperarUsuari(string? nomUsuari)
+    {
+        char trobarUsuari = 'S';
+        while (trobarUsuari != 'N' && trobarUsuari != 'n')
+        {
+            Console.Clear();
+            Console.Write("Quin usuari vols trobar? ");
+            var linea = File.ReadLines("agenda.txt")
+                .Select(linea => linea.Split(';')[0]).ToList();
+
+            bool trobat = linea.Contains(nomUsuari);
+
+            if (trobat)
+            {
+                Console.WriteLine($"Usuari: {nomUsuari} trobat.");
+                trobarUsuari = 'N';
+            }
+            else
+            {
+                Console.Write("Error. Vols buscar un altre usuari? (S/N)");
+                trobarUsuari = Convert.ToChar(Console.ReadLine());
+            }
+        }
+        
+    }
+    static void EliminarUsuari()
+    {
+        char EliminarUsuari = 'S';
+        string Nom, usuari;
+        while (EliminarUsuari != 'n' && EliminarUsuari != 'N')
+        {
+            Console.Write("Quin usuari vols eliminar? ");
+            Nom = Console.ReadLine();
+            var lineas = File.ReadAllLines("agenda.txt").ToList();
+            lineas.RemoveAll(linea => linea.Split(';')[0].Equals(Nom));
+            File.WriteAllLines("agenda.txt", lineas.Where(linea => !string.IsNullOrWhiteSpace(linea)));
+
+            Console.WriteLine($"Usuari {Nom} eliminat");
+            Console.Write("Vols eliminar un altre usuari? (S/N)");
+            EliminarUsuari = Convert.ToChar(Console.ReadLine());
+        }
+    }
+    static void MostrarAgenda()
+    {
+        var lineas = File.ReadLines("agenda.txt")
+            .Select(linea => linea.Split(';'))
+            .Where(dades => dades.Length >= 4)
+            .Select(dades => new
+            {
+                Nom = dades[0],
+                Telefon = dades[3]
+            })
+            .OrderBy(usuari => usuari.Nom)
+            .ToList();
+
+        for (int i = 0; i < lineas.Count; i++)
+        {
+            Console.WriteLine($"Nom: {lineas[i].Nom}, Telefon: {lineas[i].Telefon}");
+        }
+    }
+    static void OrdenarAgenda()
+    {
+        var lineas = File.ReadLines("agenda.txt")
+            .Select(linea => new
+            {
+                Datos = linea.Split(';'),
+                Nombre = linea.Split(';')[0]
+            })
+            .OrderBy(usuari => usuari.Nombre)
+            .Select(usuari => string.Join(";", usuari.Datos))
+            .ToList();
+
+        File.WriteAllLines("agenda.txt", lineas);
+        Console.WriteLine("La agenda esta ordenada");
+    }
 }
+

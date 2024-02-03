@@ -19,3 +19,17 @@ C:\Users\alexm\OneDrive\Escritorio\DAW\M03\Agenda\Agenda\obj\Debug\net7.0\Agenda
 C:\Users\alexm\OneDrive\Escritorio\DAW\M03\Agenda\Agenda\obj\Debug\net7.0\Agenda.dll
 C:\Users\alexm\OneDrive\Escritorio\DAW\M03\Agenda\Agenda\obj\Debug\net7.0\refint\Agenda.dll
 C:\Users\alexm\OneDrive\Escritorio\DAW\M03\Agenda\Agenda\obj\Debug\net7.0\Agenda.pdb
+C:\Users\Usuari\Desktop\examen_nilpuerto\Agenda\Agenda\Agenda\bin\Debug\net7.0\Agenda.exe
+C:\Users\Usuari\Desktop\examen_nilpuerto\Agenda\Agenda\Agenda\bin\Debug\net7.0\Agenda.deps.json
+C:\Users\Usuari\Desktop\examen_nilpuerto\Agenda\Agenda\Agenda\bin\Debug\net7.0\Agenda.runtimeconfig.json
+C:\Users\Usuari\Desktop\examen_nilpuerto\Agenda\Agenda\Agenda\bin\Debug\net7.0\Agenda.dll
+C:\Users\Usuari\Desktop\examen_nilpuerto\Agenda\Agenda\Agenda\bin\Debug\net7.0\Agenda.pdb
+C:\Users\Usuari\Desktop\examen_nilpuerto\Agenda\Agenda\Agenda\obj\Debug\net7.0\Agenda.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuari\Desktop\examen_nilpuerto\Agenda\Agenda\Agenda\obj\Debug\net7.0\Agenda.AssemblyInfoInputs.cache
+C:\Users\Usuari\Desktop\examen_nilpuerto\Agenda\Agenda\Agenda\obj\Debug\net7.0\Agenda.AssemblyInfo.cs
+C:\Users\Usuari\Desktop\examen_nilpuerto\Agenda\Agenda\Agenda\obj\Debug\net7.0\Agenda.csproj.CoreCompileInputs.cache
+C:\Users\Usuari\Desktop\examen_nilpuerto\Agenda\Agenda\Agenda\obj\Debug\net7.0\Agenda.dll
+C:\Users\Usuari\Desktop\examen_nilpuerto\Agenda\Agenda\Agenda\obj\Debug\net7.0\refint\Agenda.dll
+C:\Users\Usuari\Desktop\examen_nilpuerto\Agenda\Agenda\Agenda\obj\Debug\net7.0\Agenda.pdb
+C:\Users\Usuari\Desktop\examen_nilpuerto\Agenda\Agenda\Agenda\obj\Debug\net7.0\Agenda.genruntimeconfig.cache
+C:\Users\Usuari\Desktop\examen_nilpuerto\Agenda\Agenda\Agenda\obj\Debug\net7.0\ref\Agenda.dll

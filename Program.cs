@@ -6,15 +6,15 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 
-class Program
+class Programa
 {
-    static string agendaFilePath = "agenda.txt";
-    static List<Usuario> agenda = new List<Usuario>();
+    static string rutaAgenda = "agenda.txt";
+    static List<Usuari> agenda = new List<Usuari>();
 
     static void Main()
     {
         Console.Title = "Gestió de l'Agenda";
-        CargarAgendaDesdeArchivo();
+        CarregarAgendaDesDeFitxer();
 
         while (true)
         {
@@ -43,9 +43,7 @@ class Program
                     OrdenarAgenda();
                     break;
                 case '7':
-                case 'S':
-                case 's':
-                    GuardarAgendaEnArxiu();
+                    GuardarAgendaEnFitxer();
                     return;
                 default:
                     Console.WriteLine("Opció no vàlida. Si us plau, trieu una opció del menú.");
@@ -55,11 +53,6 @@ class Program
             Thread.Sleep(3000);
             Console.Clear();
         }
-    }
-
-    private static void RecuperarUsuari()
-    {
-        throw new NotImplementedException();
     }
 
     static void MostrarMenu()
@@ -99,10 +92,43 @@ class Program
         Console.Write("Escull una opció: ");
     }
 
+    static void CarregarAgendaDesDeFitxer()
+    {
+        if (File.Exists(rutaAgenda))
+        {
+            try
+            {
+                var lineas = File.ReadLines(rutaAgenda)
+                    .Select(linea => linea.Split(';'))
+                    .Select(datos => new Usuari
+                    {
+                        Nom = datos[0],
+                        Cognom = datos[1],
+                        DNI = datos[2],
+                        Telefon = datos[3],
+                        DataNaixament = DateTime.ParseExact(datos[4], "d", CultureInfo.InvariantCulture),
+                        CorreuElectronic = datos[5]
+                    })
+                    .ToList();
+
+                agenda.AddRange(lineas);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en la lectura del fitxer: {ex.Message}");
+            }
+        }
+        else
+        {
+            File.Create(rutaAgenda).Close();
+        }
+    }
+
+
     static void DonarAltaUsuari()
     {
         Console.WriteLine("==== Alta d'Usuari ====");
-        Usuario nouUsuari = new Usuario();
+        Usuari nouUsuari = new Usuari();
 
         Console.Write("Nom: ");
         nouUsuari.Nom = Console.ReadLine();
@@ -118,6 +144,7 @@ class Program
 
         Console.Write("Entra una data de naixament: ");
         DateTime dataNaix = Convert.ToDateTime(Console.ReadLine());
+        nouUsuari.DataNaixament = ValidarDataNeixament(dataNaix);
 
         Console.Write("Correu electrònic: ");
         nouUsuari.CorreuElectronic = ValidarCorreu(Console.ReadLine());
@@ -127,29 +154,7 @@ class Program
         MostrarDadesUsuari(nouUsuari);
     }
 
-    private static void MostrarDadesUsuari(Usuario nouUsuari)
-    {
-        throw new NotImplementedException();
-    }
-
-    private static object ValidarDNI(string? v)
-    {
-        throw new NotImplementedException();
-    }
-
-    static string ValidarNom(string nom)
-    {
-        nom = Regex.Replace(nom, @"[^a-zA-Z]", "");
-        nom = char.ToUpper(nom[0]) + nom.Substring(1).ToLower();
-        return nom;
-    }
-    static string ValidarCognom(string cognom)
-    {
-        cognom = Regex.Replace(cognom, @"[^a-zA-Z]", "");
-        cognom = char.ToUpper(cognom[0]) + cognom.Substring(1).ToLower();
-        return cognom;
-    }
-    static string ValidarDni(string dni)
+    static string ValidarDNI(string dni)
     {
         Console.Clear();
         bool dniValid = false;
@@ -168,6 +173,7 @@ class Program
         }
         return dni;
     }
+
     static string ValidarTelefon(string telefon)
     {
         Console.Clear();
@@ -185,6 +191,7 @@ class Program
         }
         return telefon;
     }
+
     static DateTime ValidarDataNeixament(DateTime dataNaix)
     {
         Console.Clear();
@@ -203,6 +210,7 @@ class Program
         }
         return dataNaix;
     }
+
     static string ValidarCorreu(string correu)
     {
         Console.Clear();
@@ -220,87 +228,153 @@ class Program
         }
         return correu;
     }
-    static void ObrirFitxer(string nom, string cognom, string dni, string telefon, DateTime dataNaix, string correu)
-    {
-        StreamWriter sW = new StreamWriter("agenda.txt", true);
-        sW.WriteLine($"{nom};{cognom};{dni};{telefon};{dataNaix.ToString("d")};{correu}\r");
-        sW.Close();
 
-    }
-    static void RecuperarUsuari(string? nomUsuari)
+    static void MostrarDadesUsuari(Usuari nouUsuari)
     {
-        char trobarUsuari = 'S';
-        while (trobarUsuari != 'N' && trobarUsuari != 'n')
+        Console.WriteLine($"Nom: {nouUsuari.Nom}");
+        Console.WriteLine($"Cognom: {nouUsuari.Cognom}");
+        Console.WriteLine($"DNI: {nouUsuari.DNI}");
+        Console.WriteLine($"Telèfon: {nouUsuari.Telefon}");
+        Console.WriteLine($"Data de naixament: {nouUsuari.DataNaixament.ToShortDateString()}");
+        Console.WriteLine($"Correu electrònic: {nouUsuari.CorreuElectronic}");
+    }
+
+    static void RecuperarUsuari()
+    {
+        Console.WriteLine("==== Recuperació d'un Usuari ====");
+        Console.Write("Entra el DNI de l'usuari a recuperar: ");
+        string dniRecuperar = Console.ReadLine();
+
+        Usuari usuariRecuperat = agenda.FirstOrDefault(usuari => usuari.DNI == dniRecuperar);
+
+        if (usuariRecuperat != null)
         {
-            Console.Clear();
-            Console.Write("Quin usuari vols trobar? ");
-            var linea = File.ReadLines("agenda.txt")
-                .Select(linea => linea.Split(';')[0]).ToList();
-
-            bool trobat = linea.Contains(nomUsuari);
-
-            if (trobat)
-            {
-                Console.WriteLine($"Usuari: {nomUsuari} trobat.");
-                trobarUsuari = 'N';
-            }
-            else
-            {
-                Console.Write("Error. Vols buscar un altre usuari? (S/N)");
-                trobarUsuari = Convert.ToChar(Console.ReadLine());
-            }
+            Console.WriteLine("\nUsuari Trobat:");
+            MostrarDadesUsuari(usuariRecuperat);
         }
-        
+        else
+        {
+            Console.WriteLine("\nUsuari no trobat.");
+        }
     }
+
+    static void ModificarUsuari()
+    {
+        Console.WriteLine("==== Modificació d'un Usuari ====");
+        Console.Write("Entra el DNI de l'usuari a modificar: ");
+        string dniModificar = Console.ReadLine();
+
+        Usuari usuariModificar = agenda.FirstOrDefault(usuari => usuari.DNI == dniModificar);
+
+        if (usuariModificar != null)
+        {
+            Console.WriteLine("\nDades actuals de l'usuari:");
+            MostrarDadesUsuari(usuariModificar);
+
+            Console.WriteLine("\nIntrodueix les noves dades:");
+            Console.Write("Nom (Enter per mantenir actual): ");
+            string nouNom = Console.ReadLine();
+            usuariModificar.Nom = (nouNom != "") ? nouNom : usuariModificar.Nom;
+
+            Console.Write("Cognom (Enter per mantenir actual): ");
+            string nouCognom = Console.ReadLine();
+            usuariModificar.Cognom = (nouCognom != "") ? nouCognom : usuariModificar.Cognom;
+
+            Console.Write("Telèfon (Enter per mantenir actual): ");
+            string nouTelefon = Console.ReadLine();
+            usuariModificar.Telefon = (nouTelefon != "") ? nouTelefon : usuariModificar.Telefon;
+
+            Console.Write("Data de naixament (Enter per mantenir actual): ");
+            DateTime novaDataNaixament;
+            if (DateTime.TryParse(Console.ReadLine(), out novaDataNaixament))
+            {
+                usuariModificar.DataNaixament = (novaDataNaixament > DateTime.Now) ? usuariModificar.DataNaixament : novaDataNaixament;
+            }
+
+            Console.Write("Correu electrònic (Enter per mantenir actual): ");
+            string nouCorreu = Console.ReadLine();
+            usuariModificar.CorreuElectronic = (nouCorreu != "") ? nouCorreu : usuariModificar.CorreuElectronic;
+
+            Console.WriteLine("\nUsuari modificat amb èxit:");
+            MostrarDadesUsuari(usuariModificar);
+        }
+        else
+        {
+            Console.WriteLine("\nUsuari no trobat.");
+        }
+    }
+
     static void EliminarUsuari()
     {
-        char EliminarUsuari = 'S';
-        string Nom, usuari;
-        while (EliminarUsuari != 'n' && EliminarUsuari != 'N')
-        {
-            Console.Write("Quin usuari vols eliminar? ");
-            Nom = Console.ReadLine();
-            var lineas = File.ReadAllLines("agenda.txt").ToList();
-            lineas.RemoveAll(linea => linea.Split(';')[0].Equals(Nom));
-            File.WriteAllLines("agenda.txt", lineas.Where(linea => !string.IsNullOrWhiteSpace(linea)));
+        Console.WriteLine("==== Esborrar un Usuari ====");
+        Console.Write("Entra el DNI de l'usuari a esborrar: ");
+        string dniEliminar = Console.ReadLine();
 
-            Console.WriteLine($"Usuari {Nom} eliminat");
-            Console.Write("Vols eliminar un altre usuari? (S/N)");
-            EliminarUsuari = Convert.ToChar(Console.ReadLine());
+        Usuari usuariEliminar = agenda.FirstOrDefault(usuari => usuari.DNI == dniEliminar);
+
+        if (usuariEliminar != null)
+        {
+            agenda.Remove(usuariEliminar);
+            Console.WriteLine("\nUsuari eliminat amb èxit.");
+        }
+        else
+        {
+            Console.WriteLine("\nUsuari no trobat.");
         }
     }
+
     static void MostrarAgenda()
     {
-        var lineas = File.ReadLines("agenda.txt")
-            .Select(linea => linea.Split(';'))
-            .Where(dades => dades.Length >= 4)
-            .Select(dades => new
-            {
-                Nom = dades[0],
-                Telefon = dades[3]
-            })
-            .OrderBy(usuari => usuari.Nom)
-            .ToList();
-
-        for (int i = 0; i < lineas.Count; i++)
+        Console.WriteLine("==== Llista d'Usuaris ====");
+        if (agenda.Any())
         {
-            Console.WriteLine($"Nom: {lineas[i].Nom}, Telefon: {lineas[i].Telefon}");
+            foreach (Usuari usuari in agenda)
+            {
+                MostrarDadesUsuari(usuari);
+                Console.WriteLine("----------------------------");
+            }
+        }
+        else
+        {
+            Console.WriteLine("L'agenda està buida.");
         }
     }
+
     static void OrdenarAgenda()
     {
-        var lineas = File.ReadLines("agenda.txt")
-            .Select(linea => new
-            {
-                Datos = linea.Split(';'),
-                Nombre = linea.Split(';')[0]
-            })
-            .OrderBy(usuari => usuari.Nombre)
-            .Select(usuari => string.Join(";", usuari.Datos))
-            .ToList();
+        Console.WriteLine("==== Ordenar l'Agenda ====");
+        if (agenda.Any())
+        {
+            agenda = agenda.OrderBy(usuari => usuari.Cognom).ToList();
+            Console.WriteLine("Agenda ordenada per cognoms.");
+        }
+        else
+        {
+            Console.WriteLine("L'agenda està buida.");
+        }
+    }
 
-        File.WriteAllLines("agenda.txt", lineas);
-        Console.WriteLine("La agenda esta ordenada");
+    static void GuardarAgendaEnFitxer()
+    {
+        using (StreamWriter writer = new StreamWriter(rutaAgenda, false))
+        {
+            foreach (Usuari usuari in agenda)
+            {
+                string linia = $"{usuari.Nom};{usuari.Cognom};{usuari.DNI};{usuari.Telefon};{usuari.DataNaixament.ToShortDateString()};{usuari.CorreuElectronic}";
+                writer.WriteLine(linia);
+            }
+        }
+        Console.WriteLine("Agenda guardada amb èxit.");
     }
 }
 
+
+public class Usuari
+{
+    public string Nom { get; set; }
+    public string Cognom { get; set; }
+    public string DNI { get; set; }
+    public string Telefon { get; set; }
+    public DateTime DataNaixament { get; set; }
+    public string CorreuElectronic { get; set; }
+}

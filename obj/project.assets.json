@@ -8,19 +8,19 @@
     "net7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\alexm\\.nuget\\packages\\": {}
+    "C:\\Users\\Usuari\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alexm\\OneDrive\\Escritorio\\DAW\\M03\\Agenda\\Agenda\\Agenda.csproj",
+      "projectUniqueName": "C:\\Users\\Usuari\\Desktop\\examen_nilpuerto\\Agenda\\Agenda\\Agenda\\Agenda.csproj",
       "projectName": "Agenda",
-      "projectPath": "C:\\Users\\alexm\\OneDrive\\Escritorio\\DAW\\M03\\Agenda\\Agenda\\Agenda.csproj",
-      "packagesPath": "C:\\Users\\alexm\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alexm\\OneDrive\\Escritorio\\DAW\\M03\\Agenda\\Agenda\\obj\\",
+      "projectPath": "C:\\Users\\Usuari\\Desktop\\examen_nilpuerto\\Agenda\\Agenda\\Agenda\\Agenda.csproj",
+      "packagesPath": "C:\\Users\\Usuari\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Usuari\\Desktop\\examen_nilpuerto\\Agenda\\Agenda\\Agenda\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\alexm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Usuari\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

@@ -8,14 +8,17 @@ using System.Threading;
 
 class Programa
 {
+    //Rutes Agenda
     static string rutaAgenda = "agenda.txt";
     static List<Usuari> agenda = new List<Usuari>();
 
+    //Principal mètode
     static void Main()
     {
         Console.Title = "Gestió de l'Agenda";
         CarregarAgendaDesDeFitxer();
 
+        //bucle per escollir l'opció (està enlleçat els mètodes)
         while (true)
         {
             MostrarMenu();
@@ -46,18 +49,20 @@ class Programa
                     GuardarAgendaEnFitxer();
                     return;
                 default:
-                    Console.WriteLine("Opció no vàlida. Si us plau, trieu una opció del menú.");
+                    Console.WriteLine("Opció no vàlida. Si us plau, trieu una opció del menú."); //Per si no escull cap opció
                     break;
             }
 
-            Thread.Sleep(3000);
+            Thread.Sleep(3000); //Quan passen 3 segons esborra
             Console.Clear();
         }
     }
 
+    //menú
     static void MostrarMenu()
     {
-        Console.BackgroundColor = ConsoleColor.DarkRed;
+        //Colors
+        Console.BackgroundColor = ConsoleColor.DarkGreen;
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Yellow;
 
@@ -79,6 +84,7 @@ class Programa
             " ║_________________________________________________________║ "
         };
 
+        //Centrar a la consola (agafa X y Y y calcula a partir de les dimensions de la consola)
         int centreY = (Console.WindowHeight - menuInterfaz.Length) / 2;
 
         foreach (string linea in menuInterfaz)
@@ -92,6 +98,7 @@ class Programa
         Console.Write("Escull una opció: ");
     }
 
+    //Metode COMPROVA SI JA TENIM GUARDADA UNA LLISTA D'USUARIS
     static void CarregarAgendaDesDeFitxer()
     {
         if (File.Exists(rutaAgenda))
@@ -100,14 +107,14 @@ class Programa
             {
                 var lineas = File.ReadLines(rutaAgenda)
                     .Select(linea => linea.Split(';'))
-                    .Select(datos => new Usuari
+                    .Select(dates => new Usuari
                     {
-                        Nom = datos[0],
-                        Cognom = datos[1],
-                        DNI = datos[2],
-                        Telefon = datos[3],
-                        DataNaixament = DateTime.ParseExact(datos[4], "d", CultureInfo.InvariantCulture),
-                        CorreuElectronic = datos[5]
+                        Nom = dates[0],
+                        Cognom = dates[1],
+                        DNI = dates[2],
+                        Telefon = dates[3],
+                        DataNaixament = DateTime.ParseExact(dates[4], "d", CultureInfo.InvariantCulture),
+                        CorreuElectronic = dates[5]
                     })
                     .ToList();
 

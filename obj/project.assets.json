@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Usuari\\Desktop\\examen_nilpuerto\\Agenda\\Agenda\\Agenda.csproj",
+      "projectUniqueName": "C:\\Users\\Usuari\\Desktop\\examen_nilpuerto\\Agenda\\Agenda\\Agenda\\Agenda.csproj",
       "projectName": "Agenda",
-      "projectPath": "C:\\Users\\Usuari\\Desktop\\examen_nilpuerto\\Agenda\\Agenda\\Agenda.csproj",
+      "projectPath": "C:\\Users\\Usuari\\Desktop\\examen_nilpuerto\\Agenda\\Agenda\\Agenda\\Agenda.csproj",
       "packagesPath": "C:\\Users\\Usuari\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Usuari\\Desktop\\examen_nilpuerto\\Agenda\\Agenda\\obj\\",
+      "outputPath": "C:\\Users\\Usuari\\Desktop\\examen_nilpuerto\\Agenda\\Agenda\\Agenda\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Usuari\\AppData\\Roaming\\NuGet\\NuGet.Config",
